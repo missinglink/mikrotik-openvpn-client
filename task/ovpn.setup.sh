@@ -40,6 +40,7 @@ user=$USER_NAME \
 password=$USER_PASS";
 
 # http://wiki.mikrotik.com/wiki/Policy_Base_Routing
+# http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/Filter
 echo "[info] adding firewall rules"
 ssh_eval 'ip firewall address-list add address=10.0.0.0/8 disabled=no list=local_traffic'
 ssh_eval 'ip firewall address-list add address=172.16.0.0/12 disabled=no list=local_traffic'
