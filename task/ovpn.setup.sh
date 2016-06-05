@@ -50,4 +50,4 @@ ssh_eval 'ip route add disabled=no dst-address=0.0.0.0/0 type=unicast gateway=uk
 ssh_eval 'ip firewall nat add chain=srcnat src-address=192.168.88.0/24 out-interface=ukvpn action=masquerade'
 
 # monitor connection
-ssh_eval '/interface ovpn-client monitor 0'
+ssh_eval 'interface ovpn-client monitor 0'
