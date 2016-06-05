@@ -157,7 +157,7 @@ encoding: BF-128-CBC/SHA1
 
 ##### Configure the firewall
 
-This is explained [is this post](http://wiki.mikrotik.com/wiki/Policy_Base_Routing), basically we define some routes in our local network that won't go through the VPN (things in the 10.0.0.0, 172.16.0.0 & 192.168.0.0 ranges) and we add them to a list called `local_traffic`:
+This is explained [is this post](http://wiki.mikrotik.com/wiki/Policy_Base_Routing), basically we define some routes in our local network that **won't** go through the VPN (things in the 10.0.0.0, 172.16.0.0 & 192.168.0.0 ranges) and we add them to a list called `local_traffic`:
 
 ```bash
 ssh admin@192.168.88.1 ip firewall address-list add address=10.0.0.0/8 disabled=no list=local_traffic
@@ -167,7 +167,7 @@ ssh admin@192.168.88.1 ip firewall address-list add address=172.16.0.0/12 disabl
 ssh admin@192.168.88.1 ip firewall address-list add address=192.168.0.0/16 disabled=no list=local_traffic
 ```
 
-Then we set up a `'mange'` rule which marks packets coming from the local network and destined for the internet with a mark named `vpn_traffic`:
+Then we set up a `'mang'e'` rule which marks packets coming from the local network and destined for the internet with a mark named `vpn_traffic`:
 
 ```bash
 ssh admin@192.168.88.1 ip firewall mangle add disabled=no action=mark-routing chain=prerouting dst-address-list=!local_traffic new-routing-mark=vpn_traffic passthrough=yes src-address=192.168.88.2-192.168.88.254
