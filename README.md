@@ -140,6 +140,7 @@ If everything went according to plan you should now be connected:
 
 ```bash
 ssh admin@192.168.88.1 interface ovpn-client print
+
 ssh admin@192.168.88.1 interface ovpn-client monitor 0
 ```
 
@@ -157,7 +158,7 @@ encoding: BF-128-CBC/SHA1
 
 ##### Configure the firewall
 
-This is explained [is this post](http://wiki.mikrotik.com/wiki/Policy_Base_Routing), basically we define some routes in our local network that **won't** go through the VPN (things in the 10.0.0.0, 172.16.0.0 & 192.168.0.0 ranges) and we add them to a list called `local_traffic`:
+This is explained [in this post](http://wiki.mikrotik.com/wiki/Policy_Base_Routing), basically we define some routes in our local network that **won't** go through the VPN (things in the 10.0.0.0, 172.16.0.0 & 192.168.0.0 ranges) and we add them to a list called `local_traffic`:
 
 ```bash
 ssh admin@192.168.88.1 ip firewall address-list add address=10.0.0.0/8 disabled=no list=local_traffic
