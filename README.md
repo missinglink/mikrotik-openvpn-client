@@ -86,6 +86,7 @@ You'll need to upload those certificates that we downloaded earlier on to your M
 
 ```bash
 scp ca.crt admin@192.168.88.1:/
+
 ssh admin@192.168.88.1 certificate import file-name=ca.crt passphrase=""
 ```
 
@@ -95,6 +96,7 @@ This is optional; if this if your first time, best do this so you can follow the
 
 ```bash
 ssh admin@192.168.88.1 certificate set ca.crt_0 name=CA
+
 ssh admin@192.168.88.1 certificate set client.crt_0 name=client
 ```
 
