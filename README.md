@@ -62,7 +62,7 @@ ca.crt  client.crt  client.key
 
 ##### Establish a SSH session
 
-All the commands are executed by SSH so you'll need SSH access to your routerboard before continuing, otherwise I guess you could read the commands and enter then in the GUI, up to you.
+All the commands are executed by SSH so you'll need SSH access to your routerboard before continuing, otherwise I guess you could read the commands and enter them in the GUI, up to you.
 
 ```bash
 ssh admin@192.168.88.1
