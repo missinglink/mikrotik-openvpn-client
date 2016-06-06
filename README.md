@@ -268,7 +268,11 @@ And finally we add a masquerade NAT rule:
 ssh admin@192.168.88.1 ip firewall nat add chain=srcnat src-address=192.168.88.0/24 out-interface=myvpn action=masquerade
 ```
 
-That's it! your external traffic should now be routed through the VPN. Hope that helps someone :)
+## Finished!
+
+That's it! your external traffic should now be routed through the VPN.
+
+If this readme helped you out please star the repo; github stars are like crack cocaine to software developers :)
 
 ## Credits / Resources
 
