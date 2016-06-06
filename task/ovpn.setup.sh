@@ -8,11 +8,8 @@
 # you can find these with /certificate print (after uploading them)
 CLIENT_CERT="client"
 SERVER_ADDR="178.159.7.148"
-USER_NAME="vpnuser"
-USER_PASS="vpnpass"
 CONN_NAME="ukvpn"
 PPP_PROFILE="OVPN-client"
-DNS_SERVER="8.8.8.8"
 
 # create PPP profile
 # http://wiki.mikrotik.com/wiki/Manual:PPP_AAA
@@ -28,16 +25,16 @@ use-mpls=no";
 # http://wiki.mikrotik.com/wiki/Manual:Interface/OVPN
 ssh_eval "interface ovpn-client remove $CONN_NAME" &>/dev/null
 ssh_eval "interface ovpn-client add \
+disabled=no \
 add-default-route=no \
 auth=sha1 \
 certificate=$CLIENT_CERT \
 connect-to=$SERVER_ADDR \
 port=1194 \
-disabled=no \
+user=vpnuser \
+password=vpnpass \
 name=$CONN_NAME \
-profile=$PPP_PROFILE \
-user=$USER_NAME \
-password=$USER_PASS";
+profile=$PPP_PROFILE";
 
 # http://wiki.mikrotik.com/wiki/Policy_Base_Routing
 # http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/Filter

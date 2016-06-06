@@ -40,11 +40,16 @@ healthcheck(){
   # fi
 
   echo "testing ssh access..."
-  ssh -q "$SSH_USER@$ADDR" exit
+  ssh -q "$SSH_USER@$ADDR" "exit"
 
   if [ $? -ne 0 ]
   then
   	echo "ssh failed for user $SSH_USER at: $ADDR"
+
+    if [ $? -eq 255 ]
+    then
+      ssh "$SSH_USER@$ADDR" "exit"
+    fi
     exit 1
   fi
 

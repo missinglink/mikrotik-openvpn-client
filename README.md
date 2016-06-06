@@ -124,10 +124,10 @@ ssh admin@192.168.88.1 ppp profile print
 
 Here we actually create an interface for the VPN connection:
 
-> Change 93.184.216.34 to your own server address
+> Change 93.184.216.34 to your own server address. User/password properties seem to be mandatory on the client even if the server doesn't have `auth-user-pass-verify` enabled.
 
 ```bash
-ssh admin@192.168.88.1 interface ovpn-client add add-default-route=no auth=sha1 certificate=client connect-to=93.184.216.34 disabled=no name=myvpn profile=OVPN-client
+ssh admin@192.168.88.1 interface ovpn-client add add-default-route=no auth=sha1 certificate=client connect-to=93.184.216.34 disabled=no user=vpnuser password=vpnpass name=myvpn profile=OVPN-client
 ```
 
 We can confirm that worked:
