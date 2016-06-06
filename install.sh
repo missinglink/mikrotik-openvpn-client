@@ -4,7 +4,7 @@ ADDR="192.168.88.1"
 SSH_USER="admin"
 
 source util.sh
-source header.sh
+source task/header.sh
 
 # ssh-keygen -f "/home/$USER/.ssh/known_hosts" -R 192.168.88.1 &>/dev/null
 healthcheck
