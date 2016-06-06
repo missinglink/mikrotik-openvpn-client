@@ -166,7 +166,7 @@ Here we actually create an interface for the VPN connection:
 > IMPORTANT!! Change xxx.xxx.xxx.xxx to your own server address (ip address or domain name).
 
 ```bash
-ssh admin@192.168.88.1 interface ovpn-client add add-default-route=no auth=sha1 certificate=client connect-to=xxx.xxx.xxx.xxx disabled=no user=vpnuser password=vpnpass name=myvpn profile=OVPN-client
+ssh admin@192.168.88.1 interface ovpn-client add connect-to=xxx.xxx.xxx.xxx add-default-route=no auth=sha1 certificate=client disabled=no user=vpnuser password=vpnpass name=myvpn profile=OVPN-client
 ```
 
 User/password properties seem to be mandatory on the client even if the server doesn't have `auth-user-pass-verify` enabled.
