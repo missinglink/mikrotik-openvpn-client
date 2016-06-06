@@ -252,11 +252,15 @@ Then we set up a `'mangle'` rule which marks packets coming from the local netwo
 ssh admin@192.168.88.1 ip firewall mangle add disabled=no action=mark-routing chain=prerouting dst-address-list=\!local_traffic new-routing-mark=vpn_traffic passthrough=yes src-address=192.168.88.2-192.168.88.254
 ```
 
+##### Configure routing
+
 Then we tell the router that all traffic with the `vpn_traffic` mark should go through the VPN interface:
 
 ```bash
 ssh admin@192.168.88.1 ip route add disabled=no dst-address=0.0.0.0/0 type=unicast gateway=myvpn routing-mark=vpn_traffic scope=30 target-scope=10
 ```
+
+##### Configure masquerade
 
 And finally we add a masquerade NAT rule:
 
