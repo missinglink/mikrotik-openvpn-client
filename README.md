@@ -68,6 +68,30 @@ All the commands are executed by SSH so you'll need SSH access to your routerboa
 ssh admin@192.168.88.1
 ```
 
+```bash
+
+MMM      MMM       KKK                          TTTTTTTTTTT      KKK
+MMMM    MMMM       KKK                          TTTTTTTTTTT      KKK
+MMM MMMM MMM  III  KKK  KKK  RRRRRR     OOOOOO      TTT     III  KKK  KKK
+MMM  MM  MMM  III  KKKKK     RRR  RRR  OOO  OOO     TTT     III  KKKKK
+MMM      MMM  III  KKK KKK   RRRRRR    OOO  OOO     TTT     III  KKK KKK
+MMM      MMM  III  KKK  KKK  RRR  RRR   OOOOOO      TTT     III  KKK  KKK
+
+MikroTik RouterOS 6.35.2 (c) 1999-2016       http://www.mikrotik.com/
+
+[?]             Gives the list of available commands
+command [?]     Gives help on the command and list of arguments
+
+[Tab]           Completes the command/word. If the input is ambiguous,
+              a second [Tab] gives possible options
+
+/               Move up to base level
+..              Move up one level
+/command        Use command at the base level
+
+[admin@MikroTik] >
+```
+
 > Great you connected! the interface is a bit weird, all commands start with a ``/`` and you use `?` for help within each section. If you didn't manage to connect you're going to need to sort that out before continuing or give up and use a GUI.
 
 Type `/quit` in to the console to exit.
