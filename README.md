@@ -196,7 +196,7 @@ ssh admin@192.168.88.1 interface ovpn-client add connect-to=xxx.xxx.xxx.xxx add-
 User/password properties seem to be mandatory on the client even if the server doesn't have `auth-user-pass-verify` enabled.
 
 
-##### Test the connection
+##### Test the VPN connection
 
 If everything went according to plan you should now be connected:
 
