@@ -5,10 +5,12 @@
 # http://wiki.mikrotik.com/wiki/OpenVPN#Unsupported
 # http://freedommafia.net/clanmain/knowledges-management-42/mikrotik/317-mikrotik-router-openvpn-setup-os-6-0-or-newer
 
+echo -n "Enter the address of your server (IP or domain) [ENTER]: "
+read SERVER_ADDR
+
 # you can find these with /certificate print (after uploading them)
 CLIENT_CERT="client"
-SERVER_ADDR="178.159.7.148"
-CONN_NAME="ukvpn"
+CONN_NAME="myvpn"
 PPP_PROFILE="OVPN-client"
 
 # create PPP profile
