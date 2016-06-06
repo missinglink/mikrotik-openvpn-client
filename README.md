@@ -254,7 +254,7 @@ ssh admin@192.168.88.1 ip firewall mangle add disabled=no action=mark-routing ch
 
 ##### Configure routing
 
-Then we tell the router that all traffic with the `vpn_traffic` mark should go through the VPN interface:
+Next we tell the router that all traffic with the `vpn_traffic` mark should go through the VPN interface:
 
 ```bash
 ssh admin@192.168.88.1 ip route add disabled=no dst-address=0.0.0.0/0 type=unicast gateway=myvpn routing-mark=vpn_traffic scope=30 target-scope=10
