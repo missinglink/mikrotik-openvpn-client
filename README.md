@@ -70,6 +70,8 @@ ssh admin@192.168.88.1
 
 > Great you connected! the interface is a bit weird, all commands start with a ``/`` and you use `?` for help within each section. If you didn't manage to connect you're going to need to sort that out before continuing or give up and use a GUI.
 
+Type `/quit` in to the console to exit.
+
 ##### Check your OS version
 
 All the code in this repo is hard-coded for version `6.35.2` (which was current at time of writing). If yours is older than that go ahead and upgrade first.
@@ -86,8 +88,27 @@ You'll need to upload those certificates that we downloaded earlier on to your M
 
 ```bash
 scp ca.crt admin@192.168.88.1:/
+scp client.crt admin@192.168.88.1:/
+scp client.key admin@192.168.88.1:/
+```
 
-ssh admin@192.168.88.1 certificate import file-name=ca.crt passphrase=""
+```bash
+ssh admin@192.168.88.1 certificate import file-name=ca.crt passphrase=\"\"
+ssh admin@192.168.88.1 certificate import file-name=client.crt passphrase=\"\"
+ssh admin@192.168.88.1 certificate import file-name=client.key passphrase=\"\"
+```
+
+We can confirm that worked:
+
+```bash
+ssh admin@192.168.88.1 certificate print
+```
+
+```bash
+Flags: K - private-key, D - dsa, L - crl, C - smart-card-key, A - authority, I - issued, R - revoked, E - expired, T - trusted
+ #          NAME                        COMMON-NAME                     SUBJECT-ALT-NAME                                                  FINGERPRINT                    
+ 0        T ca.crt_0                    Fort-Funston CA                                                                                   12911f9e101be5b3e15cd44e52cc...
+ 1 K      T client.crt_0                missinglink1                    DNS:missinglink1                                                  8bd36e8431eef6c52151c8400ef0...
 ```
 
 ##### Rename your certificates
@@ -96,7 +117,9 @@ This is optional; if this if your first time, best do this so you can follow the
 
 ```bash
 ssh admin@192.168.88.1 certificate set ca.crt_0 name=CA
+```
 
+```bash
 ssh admin@192.168.88.1 certificate set client.crt_0 name=client
 ```
 
@@ -120,21 +143,34 @@ We can confirm that worked:
 ssh admin@192.168.88.1 ppp profile print
 ```
 
+```bash
+Flags: * - default
+ 0 * name="default" remote-ipv6-prefix-pool=none use-ipv6=yes use-mpls=default
+     use-compression=default use-encryption=default only-one=default
+     change-tcp-mss=yes use-upnp=default address-list="" on-up="" on-down=""
+
+ 1   name="OVPN-client" remote-ipv6-prefix-pool=none use-ipv6=yes use-mpls=no
+     use-compression=default use-encryption=required only-one=yes
+     change-tcp-mss=yes use-upnp=default address-list="" on-up="" on-down=""
+
+ 2 * name="default-encryption" remote-ipv6-prefix-pool=none use-ipv6=yes
+     use-mpls=default use-compression=default use-encryption=yes
+     only-one=default change-tcp-mss=yes use-upnp=default address-list=""
+     on-up="" on-down=""
+```
+
 ##### Create an OpenVPN interface
 
 Here we actually create an interface for the VPN connection:
 
-> Change 93.184.216.34 to your own server address. User/password properties seem to be mandatory on the client even if the server doesn't have `auth-user-pass-verify` enabled.
+> IMPORTANT!! Change xxx.xxx.xxx.xxx to your own server address (ip address or domain name).
 
 ```bash
-ssh admin@192.168.88.1 interface ovpn-client add add-default-route=no auth=sha1 certificate=client connect-to=93.184.216.34 disabled=no user=vpnuser password=vpnpass name=myvpn profile=OVPN-client
+ssh admin@192.168.88.1 interface ovpn-client add add-default-route=no auth=sha1 certificate=client connect-to=xxx.xxx.xxx.xxx disabled=no user=vpnuser password=vpnpass name=myvpn profile=OVPN-client
 ```
 
-We can confirm that worked:
+User/password properties seem to be mandatory on the client even if the server doesn't have `auth-user-pass-verify` enabled.
 
-```bash
-ssh admin@192.168.88.1 interface ovpn-client print
-```
 
 ##### Test the connection
 
@@ -142,7 +178,19 @@ If everything went according to plan you should now be connected:
 
 ```bash
 ssh admin@192.168.88.1 interface ovpn-client print
+```
 
+Note the `'R'` which shows the connection has been established (give it a few seconds):
+
+```bash
+Flags: X - disabled, R - running
+ 0  R name="myvpn" mac-address=FE:EE:75:8F:14:3D max-mtu=1500
+      connect-to=xxx.xxx.xxx.xxx port=1194 mode=ip user="vpnuser" password="vpnpass"
+      profile=OVPN-client certificate=client auth=sha1 cipher=blowfish128
+      add-default-route=no
+```
+
+```bash
 ssh admin@192.168.88.1 interface ovpn-client monitor 0
 ```
 
@@ -164,16 +212,20 @@ This is explained [in this post](http://wiki.mikrotik.com/wiki/Policy_Base_Routi
 
 ```bash
 ssh admin@192.168.88.1 ip firewall address-list add address=10.0.0.0/8 disabled=no list=local_traffic
+```
 
+```bash
 ssh admin@192.168.88.1 ip firewall address-list add address=172.16.0.0/12 disabled=no list=local_traffic
+```
 
+```bash
 ssh admin@192.168.88.1 ip firewall address-list add address=192.168.0.0/16 disabled=no list=local_traffic
 ```
 
 Then we set up a `'mangle'` rule which marks packets coming from the local network and destined for the internet with a mark named `vpn_traffic`:
 
 ```bash
-ssh admin@192.168.88.1 ip firewall mangle add disabled=no action=mark-routing chain=prerouting dst-address-list=!local_traffic new-routing-mark=vpn_traffic passthrough=yes src-address=192.168.88.2-192.168.88.254
+ssh admin@192.168.88.1 ip firewall mangle add disabled=no action=mark-routing chain=prerouting dst-address-list=\!local_traffic new-routing-mark=vpn_traffic passthrough=yes src-address=192.168.88.2-192.168.88.254
 ```
 
 Then we tell the router that all traffic with the `vpn_traffic` mark should go through the VPN interface:
